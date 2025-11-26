@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    #network_mode: host
+    ports:
+      - 8000:8000
+    networks:
+      - app
+  database:
+    container_name: database
+    image: mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?database password required}
+      MYSQL_DATABASE: ${DB_NAME:-crud}
+      MYSQL_USER: ${DB_USER:-crud}
+      MYSQL_PASSWORD: ${DB_PASSWORD?database root password required}
+    networks:
+      - app
+
+networks:
+  app:
